@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package fixie.corpora;
+
+import "google/protobuf/any.proto";
+
+/** A document that can be used to ground LLM responses. */
+message Document {
+    /**
+     * The content of the document. While this may often be a singleton, including separate
+     * meaningful pieces of text can aid in chunking/embedding.
+     */
+    repeated string content = 1;
+
+    /**
+     * A human-readable name for this document. This should be unique within a corpus. If the
+     * document is hosted on the web, its URL is a good choice.
+     */
+    optional string name = 2;
+
+    /** Other arbitary metadata about the document, such as when it was created. */
+    optional google.protobuf.Any metadata = 3;
+}
