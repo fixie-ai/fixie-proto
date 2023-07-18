@@ -1,0 +1,10 @@
+# How Buf should generate Python files.
+# Run with: buf generate --template buf.gen.py.yaml
+version: v1
+managed:
+  enabled: true
+plugins:
+  - plugin: buf.build/protocolbuffers/python:v23.4
+    out: gen/python
+  - plugin: buf.build/protocolbuffers/pyi:v23.4
+    out: gen/python
