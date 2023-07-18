@@ -1,0 +1,12 @@
+# How Buf should generate an OpenAPI definition from our protos.
+# Run with: buf generate --template buf.gen.openapi.yaml
+version: v1
+managed:
+  enabled: true
+  go_package_prefix:
+    default: fixie.ai/proto
+    except:
+      - buf.build/googleapis/googleapis
+plugins:
+  - plugin: buf.build/grpc-ecosystem/openapiv2:v2.16.0
+    out: gen/openapi

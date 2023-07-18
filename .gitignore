@@ -1,2 +1,5 @@
 # Compiled protos
 gen/
+
+# Python distribution
+dist/

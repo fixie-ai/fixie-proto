@@ -1,3 +1,5 @@
+# How Buf should generate Python files.
+# Run with: buf generate --template buf.gen.py.yaml
 version: v1
 managed:
   enabled: true
