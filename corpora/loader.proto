@@ -87,6 +87,8 @@ message LoadResponse {
   repeated Partition new_partitions = 2;
 }
 
+// Note: We don't actually use gRPC (for now), but defining a service that references our request
+// and response messages ensures that they're included in the generated OpenAPI spec.
 service FixieCorpusLoadingService {
   // Loads documents into a corpus.
   rpc Load(LoadRequest) returns (LoadResponse);
