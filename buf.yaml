@@ -9,5 +9,3 @@ breaking:
 lint:
   use:
     - DEFAULT
-  except:
-    - PACKAGE_VERSION_SUFFIX
