@@ -1,8 +1,18 @@
 syntax = "proto2";
 
-package corpora;
+package fixie.corpora.v1;
 
-import "corpora/common.proto";
+import "fixie/corpora/v1/common.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    title: "Fixie Corpus Loading API"
+    version: "v1"
+    description: "API for loading documents into a Fixie corpus."
+  }
+};
 
 // A request to load documents for a corpus. During loading, the corpus will issue a series of such
 // requests to the loader in order to populate itself.
@@ -52,6 +62,12 @@ import "corpora/common.proto";
 //          Note: Including multiple parent_ids in each partition would also work and would be an
 //              effective way to limit parallelism if desired.
 message LoadRequest {
+  // The id of the corpus that documents will be loaded into.
+  // Since corpus loading uses an inverted server-client model, typically there is only one corpus
+  // anyway, but including this id allows for the possibility of multiple corpora being loaded by
+  // a single Fixie client in parallel.
+  optional string corpus_id = 3;
+
   // The partition of the corpus that should be read. This will be empty for the initial request,
   // indicating the default partition. For subsequent requests, it will typically be the name of a
   // partition returned by a previous request, though it could be empty if the default partition
@@ -90,6 +106,12 @@ message LoadResponse {
 // Note: We don't actually use gRPC (for now), but defining a service that references our request
 // and response messages ensures that they're included in the generated OpenAPI spec.
 service FixieCorpusLoadingService {
-  // Loads documents into a corpus.
-  rpc Load(LoadRequest) returns (LoadResponse);
+  // Surfaces documents to load into a corpus. Note that this is invoked by Fixie and served by
+  // the client, not the other way around.
+  rpc Load(LoadRequest) returns (LoadResponse) {
+    option (google.api.http) = {
+      post: "/v1/corpora/{corpus_id}:load"
+      body: "*"
+    };
+  }
 }
