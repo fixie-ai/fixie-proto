@@ -6,6 +6,14 @@ import "fixie/corpora/v1/common.proto";
 import "google/api/annotations.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    title: "Fixie Corpus Loading API"
+    version: "v1"
+    description: "API for loading documents into a Fixie corpus."
+  }
+};
+
 // A request to load documents for a corpus. During loading, the corpus will issue a series of such
 // requests to the loader in order to populate itself.
 //
@@ -107,11 +115,3 @@ service FixieCorpusLoadingService {
     };
   }
 }
-
-option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
-  info: {
-    title: "Fixie Corpus Loading API"
-    version: "v1"
-    description: "API for loading documents into a Fixie corpus."
-  }
-};
