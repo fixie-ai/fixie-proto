@@ -27,19 +27,39 @@ jobs:
         with:
           version: "1.24.0"
           github_token: ${{ github.token }}
+        # Unlike lint and breaking, format does not make its own suggestions,
+        # so we use action-suggester to make them.
       - run: buf format
       - uses: reviewdog/action-suggester@v1
         with:
           tool_name: "buf format"
+
+        # For version increments, things get more tricky because GitHub doesn't
+        # allow adding suggestions (or even comments) to a file that isn't yet
+        # modified by the PR.
+      - uses: tj-actions/changed-files@v37
+        id: changed-files
+        with:
+          files: |
+            **/pyproject.toml
       - uses: actions/setup-python@v2
+        if: steps.changed-files.outputs.any_changed == 'true'
         with:
           python-version: '3.9'
       - uses: snok/install-poetry@v1.3.1
+        if: steps.changed-files.outputs.any_changed == 'true'
       - uses: abatilo/actions-poetry@v2
+        if: steps.changed-files.outputs.any_changed == 'true'
         with:
           poetry-version: 1.2.1
       - run: poetry version patch
+        if: steps.changed-files.outputs.any_changed == 'true'
       - uses: reviewdog/action-suggester@v1
+        if: steps.changed-files.outputs.any_changed == 'true'
         with:
           tool_name: "version bump"
+      - uses: thollander/actions-comment-pull-request@v2
+        if: steps.changed-files.outputs.any_changed != 'true'
+        with:
+          message: "If your change should be published to PyPI, don't forget to bump the version!"
 
