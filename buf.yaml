@@ -1,5 +1,5 @@
 version: v1
-name: buf.build/fixieai/fixie
+name: buf.build/fixie-ai/fixie
 deps:
   - buf.build/googleapis/googleapis
   - buf.build/grpc-ecosystem/grpc-gateway
