@@ -39,27 +39,24 @@ jobs:
         # modified by the PR.
       - uses: tj-actions/changed-files@v37
         id: changed-files
-        with:
-          files: |
-            **/pyproject.toml
       - uses: actions/setup-python@v2
-        if: steps.changed-files.outputs.any_changed == 'true'
+        if: contains(steps.changed-files.outputs.all_changed_files, 'pyproject.toml')
         with:
           python-version: '3.9'
       - uses: snok/install-poetry@v1.3.1
-        if: steps.changed-files.outputs.any_changed == 'true'
+        if: contains(steps.changed-files.outputs.all_changed_files, 'pyproject.toml')
       - uses: abatilo/actions-poetry@v2
-        if: steps.changed-files.outputs.any_changed == 'true'
+        if: contains(steps.changed-files.outputs.all_changed_files, 'pyproject.toml')
         with:
           poetry-version: 1.2.1
       - run: poetry version patch
-        if: steps.changed-files.outputs.any_changed == 'true'
+        if: contains(steps.changed-files.outputs.all_changed_files, 'pyproject.toml')
       - uses: reviewdog/action-suggester@v1
-        if: steps.changed-files.outputs.any_changed == 'true'
+        if: contains(steps.changed-files.outputs.all_changed_files, 'pyproject.toml')
         with:
           tool_name: "version bump"
       - uses: thollander/actions-comment-pull-request@v2
-        if: steps.changed-files.outputs.any_changed != 'true'
+        if: ! contains(steps.changed-files.outputs.all_changed_files, 'pyproject.toml')
         with:
           message: "If your change should be published to PyPI, don't forget to bump the version!"
 
