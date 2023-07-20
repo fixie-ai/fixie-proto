@@ -1,4 +1,4 @@
-name: push
+name: push-bsr
 on: push
 jobs:
   # This job pushes the module to BSR. It creates a draft for most
