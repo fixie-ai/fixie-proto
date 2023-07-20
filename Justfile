@@ -42,9 +42,6 @@ build-python:
     find gen/python -type d -exec touch {}/__init__.py \;
     poetry build
 
-# TODO(mdepinet): Re-enable once we have a PyPI team and package.
-# Publish wheel to PyPI.
-# This uses the PyPI API Token stored in the Google Cloud Secrets Manager, which you need
-# access to in order to publish the wheel.
-#publish: build-python
-#    poetry publish -u __token__ -p $(gcloud secrets versions access --secret=fixie-sdk-pypi-api-token latest)
+# Publish wheel to PyPI. A PyPI API key must be provided.
+publish-python *FLAGS: build-python
+    poetry publish -u __token__ -p {{FLAGS}}

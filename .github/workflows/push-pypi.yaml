@@ -1,0 +1,36 @@
+name: push-pypi
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'pyproject.toml'
+
+jobs:
+  # This job builds and pushes to PyPI when pyproject.toml changes.
+  # The expectation is that a change to pyproject.toml implies a
+  # version change (possibly along with other changes).
+  push-module:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: bufbuild/buf-setup-action@v1
+        with:
+          version: "1.24.0"
+          github_token: ${{ github.token }}
+      - uses: bufbuild/buf-lint-action@v1
+      - uses: bufbuild/buf-breaking-action@v1
+        with:
+          against: 'https://github.com/fixie-ai/fixie-proto.git#branch=main,ref=HEAD~1'
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+      - uses: snok/install-poetry@v1.3.1
+      - uses: abatilo/actions-poetry@v2
+        with:
+          poetry-version: 1.2.1
+      - uses: extractions/setup-just@v1
+      - run: just publish-python ${{ secrets.PYPI_KEY }}
+
+
+

@@ -4,7 +4,7 @@ on: pull_request
 jobs:
   # This job handles Buf integration. Namely, it provides inline comments
   # for lint issues and breaking changes.
-  build:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -16,3 +16,30 @@ jobs:
       - uses: bufbuild/buf-breaking-action@v1
         with:
           against: "https://github.com/fixie-ai/fixie-proto.git#branch=main"
+  # This job adds suggestions for format changes and a Python version increment.
+  # Some version increment is necessary for successfully pushing to PyPI, but it's
+  # up to developers whether that push should happen.
+  format-and-version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: bufbuild/buf-setup-action@v1
+        with:
+          version: "1.24.0"
+          github_token: ${{ github.token }}
+      - run: buf format
+      - uses: reviewdog/action-suggester@v1
+        with:
+          tool_name: "buf format"
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+      - uses: snok/install-poetry@v1.3.1
+      - uses: abatilo/actions-poetry@v2
+        with:
+          poetry-version: 1.2.1
+      - run: poetry version patch
+      - uses: reviewdog/action-suggester@v1
+        with:
+          tool_name: "version bump"
+
