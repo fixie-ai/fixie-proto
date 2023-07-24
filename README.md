@@ -43,6 +43,8 @@ If you'd prefer to use protoc, see the advice above about including Fixie protos
 
 If you'd prefer not to deal with protos, we've got you covered! All of our APIs can accept and return JSON instead. Just set your Content-Type header to `application/json` instead of `application/proto`.
 
+Our OpenAPI spec matches the proto API. You can view it [here](https://petstore.swagger.io/?url=https://gist.githubusercontent.com/mdepinet/1382c315186d178f587f3d9ca382b74e/raw/be61192d0fe190e646cc52a494017ba7dbe3a33b/loader.swagger.json).
+
 <!-- TODO(mdepinet): Figure out how/where to publish the generated OpenAPI and then link to that here. -->
 
 
