@@ -1,0 +1,29 @@
+name: push-openapi
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  # This job builds and pushes updates for our OpenAPI. The API is generated
+  # from our proto definitions using Buf. We push it to GitHub Gists for
+  # hosting. Users view it via Swagger (see the README).
+  push-module:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: bufbuild/buf-setup-action@v1
+        with:
+          version: "1.24.0"
+          github_token: ${{ github.token }}
+      - run: buf generate --template buf.gen.json.yaml
+      - uses: popsiclestick/gist-sync-action@v1.2.0
+        with:
+          auth: ${{ secrets.GIST_PAT }}
+          gist_url: https://gist.github.com/mdepinet/1382c315186d178f587f3d9ca382b74e
+          gist_title: loader.swagger.json
+          gist_description: Fixie Corpus Loading API
+          github_file: gen/openapi/fixie/corpora/v1/loader.swagger.json
+
+
+
