@@ -39,7 +39,7 @@ poetry *FLAGS:
 # Generate Python code and build a wheel.
 build-python:
     buf generate --template buf.gen.py.yaml
-    find gen/python -type d -exec touch {}/__init__.py \;
+    find gen/python/fixie_proto -type d -exec touch {}/__init__.py \;
     poetry build
 
 # Publish wheel to PyPI. A PyPI API key must be provided.
