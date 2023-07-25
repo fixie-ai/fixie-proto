@@ -16,4 +16,6 @@ message Document {
 
   // Other arbitary metadata about the document, such as when it was created.
   optional google.protobuf.Any metadata = 3;
+
+  optional string mikes_new_field = 4;
 }
