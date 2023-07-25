@@ -1,13 +1,14 @@
 [tool.poetry]
 name = "fixie-proto"
-version = "0.1.1"
+version = "0.1.2"
 description = ""
 authors = ["Fixie.ai Team <founders@fixie.ai>"]
 readme = "README.md"
-packages = [{include = "gen/python"}]
+packages = [{include = "fixie", from = "gen/python"}]
+include = [{ path = "gen/python/fixie/**/*.py", format = ["sdist", "wheel"]}]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3"
 protobuf = ">=4.21.1, <5"
 
 

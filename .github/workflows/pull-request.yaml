@@ -34,29 +34,10 @@ jobs:
         with:
           tool_name: "buf format"
 
-        # For version increments, things get more tricky because GitHub doesn't
-        # allow adding suggestions (or even comments) to a file that isn't yet
-        # modified by the PR.
-      - uses: tj-actions/changed-files@v37
-        id: changed-files
-      - uses: actions/setup-python@v2
-        if: contains(steps.changed-files.outputs.all_changed_files, 'pyproject.toml')
-        with:
-          python-version: '3.9'
-      - uses: snok/install-poetry@v1.3.1
-        if: contains(steps.changed-files.outputs.all_changed_files, 'pyproject.toml')
-      - uses: abatilo/actions-poetry@v2
-        if: contains(steps.changed-files.outputs.all_changed_files, 'pyproject.toml')
-        with:
-          poetry-version: 1.2.1
-      - run: poetry version patch
-        if: contains(steps.changed-files.outputs.all_changed_files, 'pyproject.toml')
-      - uses: reviewdog/action-suggester@v1
-        if: contains(steps.changed-files.outputs.all_changed_files, 'pyproject.toml')
-        with:
-          tool_name: "version bump"
+        # TODO(mdepinet): GitHub doesn't allow adding suggestions or comments
+        # to unchanged files *or unchanged lines* so unfortunately for now the
+        # best we can do is add a generic PR-level comment. :/
       - uses: thollander/actions-comment-pull-request@v2
-        if: ${{ !contains(steps.changed-files.outputs.all_changed_files, 'pyproject.toml') }}
         with:
           message: "If your change should be published to PyPI, don't forget to bump the version!"
 
