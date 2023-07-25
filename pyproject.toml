@@ -4,8 +4,8 @@ version = "0.1.2"
 description = ""
 authors = ["Fixie.ai Team <founders@fixie.ai>"]
 readme = "README.md"
-packages = [{include = "fixie", from = "gen/python"}]
-include = [{ path = "gen/python/fixie/**/*.py", format = ["sdist", "wheel"]}]
+packages = [{include = "fixie_proto", from = "gen/python"}]
+include = [{ path = "gen/python/fixie_proto/**/*", format = ["sdist", "wheel"]}]
 
 [tool.poetry.dependencies]
 python = "^3"
