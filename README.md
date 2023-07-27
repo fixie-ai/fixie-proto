@@ -1,18 +1,18 @@
 # fixie-proto
-This repository contains protocol buffer definitions for working with the Fixie platform. The intention is for this to define our public-facing APIs. Tooling in this repository should then make it easy to use the *already compiled* protos in various languages.
+This repository contains protocol buffer definitions for working with the Fixie platform. Tooling in this repository makes it easy to use the *already compiled* protos in various languages.
 
 ## Usage
 
 ### Buf Schema Registry (BSR)
 
-For languages supported by the Buf Schema Registry, instructions for adding these protos like a normal dependency can be found [here](https://buf.build/fixie-ai/fixie/assets/main).  For example, to add a TypeScript dependency using yarn:
+For languages supported by the Buf Schema Registry, instructions for adding these protos like a normal dependency can be found [here](https://buf.build/fixie-ai/fixie/assets/main).  For example, to add a JavaScript dependency using yarn:
 
 ```
 yarn config set npmScopes.buf.npmRegistryServer https://buf.build/gen/npm/v1/
 yarn add @buf/fixie-ai_fixie.bufbuild_connect-es@latest
 ```
 
-As of July 2023, BSR has support for JavaScript/Typscript, Go, JVM-based languages like Java and Kotlin, and Swift.
+As of July 2023, BSR has support for JavaScript/Typescript, Go, JVM-based languages like Java and Kotlin, and Swift.
 
 ### Directly supported languages
 
@@ -37,11 +37,11 @@ Buf can be used to easily compile our protos in other languages too, including: 
 buf generate --template buf.gen.yaml buf.build/fixie-ai/fixie
 ```
 
-If you'd prefer to use protoc, see the advice above about including Fixie protos in your own proto library.
+Note that this command builds the latest version of Fixie protos from BSR - no need to manage the proto files yourself.
 
 ## Using JSON instead
 
-If you'd prefer not to deal with protos, we've got you covered! All of our APIs can accept and return JSON instead. Just set your Content-Type header to `application/json` instead of `application/proto`.
+If you'd prefer not to deal with protos, we've got you covered! All of our APIs can accept and return JSON instead. Just set your Content-Type and Accept headers to `application/json` instead of `application/proto`.
 
 Our OpenAPI spec matches the proto API. You can view it [here](https://petstore.swagger.io/?url=https://gist.githubusercontent.com/mdepinet/1382c315186d178f587f3d9ca382b74e/raw/be61192d0fe190e646cc52a494017ba7dbe3a33b/loader.swagger.json).
 
@@ -64,4 +64,4 @@ Please run "just" before sending PRs. This will format and lint your proto files
 
 ### Releases
 
-New versions are pushed to BSR whenever a PR is merged into main. These events will also cause a push to PyPI as long as the version in pyproject.toml was incremented.
+New versions are pushed to BSR whenever a PR is merged into main. This also updates our OpenAPI spec at the url above. As long as the version in pyproject.toml is incremented, this also pushes a new version to PyPI.
