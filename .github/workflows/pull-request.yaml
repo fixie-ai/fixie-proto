@@ -1,6 +1,10 @@
 name: pull-requests
 on: pull_request
 
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   # This job handles Buf integration. Namely, it provides inline comments
   # for lint issues and breaking changes.
